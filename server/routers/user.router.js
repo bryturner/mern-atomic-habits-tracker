@@ -188,9 +188,12 @@ router.put("/habits", auth, async (req, res) => {
         { _id: matchedUserId },
         { $push: { habits: newHabit } }
       );
-      return res.json("Your habit has been successfully added");
-    } else {
-      res.json(
+      return res.json(`${newHabit.habitTitle} has been successfully added`);
+    }
+
+    const existingHabitTitle = existingHabit.habitTitle;
+    if (existingHabitTitle === habitTitle) {
+      return res.json(
         `A habit with the title ${existingHabit.habitTitle} already exists`
       );
     }
@@ -207,19 +210,26 @@ router.delete("/habits", auth, async (req, res) => {
 
     const matchingUser = await User.findOne({ username });
 
-    if (matchingUser.habits.habitTitle !== habitTitle) {
+    const existingHabit = matchingUser.habits.find((habit) => {
+      if (habit.habitTitle === habitTitle) {
+        return habit;
+      }
+    });
+
+    if (existingHabit === undefined) {
       return res.json({
-        errorMessage: "The habit title you entered does not exist.",
+        errorMessage: `The habit title ${habitTitle} does not exist`,
       });
     }
 
-    await User.updateOne(
-      { username: username },
-      { $pull: { habits: { habitTitle: habitTitle } } }
-    );
-
-    console.log(`you have deleted ${habitTitle}`);
-    res.send();
+    const existingHabitTitle = existingHabit.habitTitle;
+    if (existingHabitTitle === habitTitle) {
+      await User.updateOne(
+        { username: username },
+        { $pull: { habits: { habitTitle: habitTitle } } }
+      );
+      res.json(`You have deleted ${habitTitle}`);
+    }
   } catch (err) {
     console.error(err);
   }

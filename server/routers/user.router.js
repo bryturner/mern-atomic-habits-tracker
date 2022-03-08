@@ -137,25 +137,17 @@ router.get("/loggedIn", (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
-  try {
-    await User.find({}).then((users) => {
-      res.send(users);
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+// router.get("/login", async (req, res) => {
+//   try {
+//     await User.find({}).then((users) => {
+//       res.send(users);
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 
-// Figuring out how to add to an array within a collection
-async function addHabit(userId, newHabit) {
-  try {
-    await User.updateOne({ userId }, { $push: { habits: newHabit } });
-  } catch (err) {
-    console.log(err);
-  }
-}
-
+// Add a new habit to the user habits array
 router.put("/habits", auth, async (req, res) => {
   try {
     const {
@@ -167,17 +159,6 @@ router.put("/habits", auth, async (req, res) => {
       checkboxColor,
     } = req.body;
 
-    if (!username)
-      return res.status(400).json({ errorMessage: "No username from body" });
-
-    const existingUser = await User.findOne({ username });
-    if (!existingUser)
-      return res.status(401).json({
-        errorMessage: "No username from database",
-      });
-
-    const matchedUserId = existingUser._id;
-
     const newHabit = {
       habitTitle: habitTitle,
       habitDescription: habitDescription,
@@ -186,9 +167,59 @@ router.put("/habits", auth, async (req, res) => {
       checkboxColor: checkboxColor,
     };
 
-    await addHabit(matchedUserId, newHabit);
+    if (!username)
+      return res.status(400).json({ errorMessage: "No username from body" });
 
-    res.send(existingUser);
+    const matchingUser = await User.findOne({ username });
+    if (!matchingUser)
+      return res.status(400).json({
+        errorMessage: "Username not found in database",
+      });
+
+    const existingHabit = matchingUser.habits.find((habit) => {
+      if (habit.habitTitle === habitTitle) {
+        return habit;
+      }
+    });
+
+    if (existingHabit === undefined) {
+      const matchedUserId = matchingUser._id;
+      await User.updateOne(
+        { _id: matchedUserId },
+        { $push: { habits: newHabit } }
+      );
+      return res.json("Your habit has been successfully added");
+    } else {
+      res.json(
+        `A habit with the title ${existingHabit.habitTitle} already exists`
+      );
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// delete a habit from the habits array based on the habit title
+router.delete("/habits", auth, async (req, res) => {
+  try {
+    //   username is used instead of userId for testing, switch later
+    const { username, habitTitle } = req.body;
+
+    const matchingUser = await User.findOne({ username });
+
+    if (matchingUser.habits.habitTitle !== habitTitle) {
+      return res.json({
+        errorMessage: "The habit title you entered does not exist.",
+      });
+    }
+
+    await User.updateOne(
+      { username: username },
+      { $pull: { habits: { habitTitle: habitTitle } } }
+    );
+
+    console.log(`you have deleted ${habitTitle}`);
+    res.send();
   } catch (err) {
     console.error(err);
   }

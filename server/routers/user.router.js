@@ -58,8 +58,14 @@ router.post("/register", async (req, res) => {
       process.env.JWT_SECRET
     );
 
+    const currentUsername = savedUser.username;
+
+    const userData = {
+      token: token,
+      username: currentUsername,
+    };
     res
-      .cookie("token", token, {
+      .cookie("userData", userData, {
         httpOnly: true,
       })
       .send();
@@ -101,11 +107,18 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET
     );
 
+    const currentUsername = existingUser.username;
+
+    const userData = {
+      token: token,
+      username: currentUsername,
+    };
+
     res
-      .cookie("token", token, {
+      .cookie("userData", userData, {
         httpOnly: true,
       })
-      .send(existingUser._id);
+      .send();
   } catch (err) {
     console.error(err);
     res.status(500).send();
@@ -115,17 +128,17 @@ router.post("/login", async (req, res) => {
 // Log out user
 router.get("/logout", (req, res) => {
   res
-    .cookie("token", "", {
+    .cookie("userData", "", {
       httpOnly: true,
       expires: new Date(0),
     })
     .send();
 });
 
-// User is logged in
+// Check if user is logged in
 router.get("/loggedIn", (req, res) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.userData.token;
 
     if (!token) return res.json(false);
 
@@ -137,15 +150,30 @@ router.get("/loggedIn", (req, res) => {
   }
 });
 
-// router.get("/login", async (req, res) => {
-//   try {
-//     await User.find({}).then((users) => {
-//       res.send(users);
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+// get matching user data
+router.get("/userData", auth, async (req, res) => {
+  try {
+    const username = req.cookies.userData.username;
+
+    if (!username)
+      return res
+        .status(400)
+        .json({ errorMessage: "No username was found in the cookie" });
+
+    const matchingUser = await User.findOne({ username });
+
+    const matchingUsername = matchingUser.username;
+
+    if (username !== matchingUsername)
+      return res
+        .status(400)
+        .json({ errorMessage: "No matching username was found in the DB" });
+
+    if (username === matchingUsername) return res.json(matchingUser);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 // Add a new habit to the user habits array
 router.put("/habits", auth, async (req, res) => {

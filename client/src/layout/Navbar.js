@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+
+import LogOutButton from "../components/buttons/LogOutButton";
+import AuthContext from "../context/AuthContext";
 
 function Navbar() {
   const { loggedIn } = useContext(AuthContext);
@@ -14,6 +18,7 @@ function Navbar() {
       {loggedIn === true && (
         <>
           <Link to="/home">Home</Link>
+          <LogOutButton />
         </>
       )}
     </nav>

@@ -153,7 +153,7 @@ router.get("/loggedIn", (req, res) => {
 // get matching user data
 router.get("/userData", auth, async (req, res) => {
   try {
-    const username = req.cookies.userData.username;
+    const { username } = req.cookies.userData;
 
     if (!username)
       return res
@@ -179,7 +179,6 @@ router.get("/userData", auth, async (req, res) => {
 router.put("/habits", auth, async (req, res) => {
   try {
     const {
-      username,
       habitTitle,
       habitDescription,
       habitFrequency,
@@ -194,6 +193,8 @@ router.put("/habits", auth, async (req, res) => {
       habitDuration: habitDuration,
       checkboxColor: checkboxColor,
     };
+
+    const { username } = req.cookies.userData;
 
     if (!username)
       return res.status(400).json({ errorMessage: "No username from body" });
@@ -234,7 +235,6 @@ router.put("/habits", auth, async (req, res) => {
 router.put("/editHabit", auth, async (req, res) => {
   try {
     const {
-      _id,
       habitTitle,
       habitDescription,
       habitFrequency,
@@ -242,13 +242,15 @@ router.put("/editHabit", auth, async (req, res) => {
       checkboxColor,
     } = req.body;
 
-    if (!_id)
-      return res.status(400).json({ errorMessage: "No user id from body" });
+    const { username } = req.cookies.userData;
 
-    const matchingUser = await User.findOne({ _id });
+    if (!username)
+      return res.status(400).json({ errorMessage: "No username from body" });
+
+    const matchingUser = await User.findOne({ username });
     if (!matchingUser)
       return res.status(400).json({
-        errorMessage: "User id not found in database",
+        errorMessage: "Username not found in database",
       });
 
     const existingHabit = matchingUser.habits.find((habit) => {
@@ -264,9 +266,12 @@ router.put("/editHabit", auth, async (req, res) => {
     }
 
     const existingHabitTitle = existingHabit.habitTitle;
+
+    const matchingUsername = matchingUser.username;
+
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
-        { _id: matchingUser },
+        { username: matchingUsername },
         {
           $set: {
             habits: {
@@ -289,10 +294,11 @@ router.put("/editHabit", auth, async (req, res) => {
 // delete a habit from the habits array based on the habit title
 router.delete("/habits", auth, async (req, res) => {
   try {
-    //   username is used instead of userId for testing, switch later
-    const { _id, habitTitle } = req.body;
+    const { habitTitle } = req.body;
 
-    const matchingUser = await User.findOne({ _id });
+    const { username } = req.cookies.userData;
+
+    const matchingUser = await User.findOne({ username });
 
     const existingHabit = matchingUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
@@ -307,9 +313,11 @@ router.delete("/habits", auth, async (req, res) => {
     }
 
     const existingHabitTitle = existingHabit.habitTitle;
+
+    const matchingUsername = matchingUser.username;
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
-        { _id: matchingUser },
+        { username: matchingUsername },
         { $pull: { habits: { habitTitle: habitTitle } } }
       );
       res.json(`You have successfully deleted ${habitTitle}`);

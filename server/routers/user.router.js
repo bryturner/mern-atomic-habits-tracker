@@ -202,13 +202,69 @@ router.put("/habits", auth, async (req, res) => {
   }
 });
 
+// Edit/Update a specific habit
+router.put("/editHabit", auth, async (req, res) => {
+  try {
+    const {
+      _id,
+      habitTitle,
+      habitDescription,
+      habitFrequency,
+      habitDuration,
+      checkboxColor,
+    } = req.body;
+
+    if (!_id)
+      return res.status(400).json({ errorMessage: "No user id from body" });
+
+    const matchingUser = await User.findOne({ _id });
+    if (!matchingUser)
+      return res.status(400).json({
+        errorMessage: "User id not found in database",
+      });
+
+    const existingHabit = matchingUser.habits.find((habit) => {
+      if (habit.habitTitle === habitTitle) {
+        return habit;
+      }
+    });
+
+    if (existingHabit === undefined) {
+      return res.status(400).json({
+        errorMessage: "Habit cannot be found",
+      });
+    }
+
+    const existingHabitTitle = existingHabit.habitTitle;
+    if (existingHabitTitle === habitTitle) {
+      await User.updateOne(
+        { _id: matchingUser },
+        {
+          $set: {
+            habits: {
+              habitTitle: habitTitle,
+              habitDescription: habitDescription,
+              habitFrequency: habitFrequency,
+              habitDuration: habitDuration,
+              checkboxColor: checkboxColor,
+            },
+          },
+        }
+      );
+      return res.json(`${habitTitle} has been successfully updated`);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 // delete a habit from the habits array based on the habit title
 router.delete("/habits", auth, async (req, res) => {
   try {
     //   username is used instead of userId for testing, switch later
-    const { username, habitTitle } = req.body;
+    const { _id, habitTitle } = req.body;
 
-    const matchingUser = await User.findOne({ username });
+    const matchingUser = await User.findOne({ _id });
 
     const existingHabit = matchingUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
@@ -225,10 +281,10 @@ router.delete("/habits", auth, async (req, res) => {
     const existingHabitTitle = existingHabit.habitTitle;
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
-        { username: username },
+        { _id: matchingUser },
         { $pull: { habits: { habitTitle: habitTitle } } }
       );
-      res.json(`You have deleted ${habitTitle}`);
+      res.json(`You have successfully deleted ${habitTitle}`);
     }
   } catch (err) {
     console.error(err);

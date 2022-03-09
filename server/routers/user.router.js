@@ -138,7 +138,7 @@ router.get("/logout", (req, res) => {
 // Check if user is logged in
 router.get("/loggedIn", (req, res) => {
   try {
-    const token = req.cookies.userData.token;
+    const { token } = req.cookies.userData;
 
     if (!token) return res.json(false);
 
@@ -161,6 +161,10 @@ router.get("/userData", auth, async (req, res) => {
         .json({ errorMessage: "No username was found in the cookie" });
 
     const matchingUser = await User.findOne({ username });
+    if (!matchingUser)
+      return res.status(400).json({
+        errorMessage: "Username not found in database",
+      });
 
     const matchingUsername = matchingUser.username;
 
@@ -170,6 +174,36 @@ router.get("/userData", auth, async (req, res) => {
         .json({ errorMessage: "No matching username was found in the DB" });
 
     if (username === matchingUsername) return res.json(matchingUser);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Get users first name for welcome message
+router.get("/userFirstName", auth, async (req, res) => {
+  try {
+    const { username } = req.cookies.userData;
+
+    if (!username)
+      return res
+        .status(400)
+        .json({ errorMessage: "No username was found in the cookie" });
+
+    const matchingUser = await User.findOne({ username });
+    if (!matchingUser)
+      return res.status(400).json({
+        errorMessage: "Username not found in database",
+      });
+
+    const matchingUsername = matchingUser.username;
+
+    if (username !== matchingUsername)
+      return res
+        .status(400)
+        .json({ errorMessage: "No matching username was found in the DB" });
+
+    const userFirstName = matchingUser.firstName;
+    if (username === matchingUsername) return res.json(userFirstName);
   } catch (err) {
     console.log(err);
   }

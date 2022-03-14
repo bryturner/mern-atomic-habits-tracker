@@ -3,7 +3,7 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
-
+// Changing cookie username
 // Register user
 router.post("/register", async (req, res) => {
   try {
@@ -167,13 +167,21 @@ router.get("/userData", auth, async (req, res) => {
       });
 
     const matchingUsername = matchingUser.username;
+    const { firstName, habits } = matchingUser;
+
+    //  Data to send to client
+    const userData = {
+      username: matchingUsername,
+      firstName: firstName,
+      habits: habits,
+    };
 
     if (username !== matchingUsername)
       return res
         .status(400)
         .json({ errorMessage: "No matching username was found in the DB" });
 
-    if (username === matchingUsername) return res.json(matchingUser);
+    if (username === matchingUsername) return res.json(userData);
   } catch (err) {
     console.log(err);
   }
@@ -210,7 +218,7 @@ router.get("/userFirstName", auth, async (req, res) => {
 });
 
 // Add a new habit to the user habits array
-router.put("/habits", auth, async (req, res) => {
+router.put("/newHabit", auth, async (req, res) => {
   try {
     const {
       habitTitle,

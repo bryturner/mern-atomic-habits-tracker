@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import AuthContext from "../context/AuthContext";
+import UserContext from "../context/UserContext";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { getLoggedIn } = useContext(AuthContext);
+  const { getUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -23,6 +25,7 @@ function LoginPage() {
       await axios.post("http://localhost:5015/user/login", loginData);
       //  .then((res) => getUserFirstName(res.data));
       await getLoggedIn();
+      await getUserData();
       navigate("/home");
     } catch (err) {
       console.error(err);

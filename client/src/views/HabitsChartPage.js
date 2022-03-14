@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NewHabitForm from "../components/forms/NewHabitForm";
 
 import HabitsList from "../components/lists/HabitsList";
-import UserContext from "../context/UserContext";
+// import UserContext from "../context/UserContext";
 
 function HabitsChartPage() {
   const [userFirstName, setUserFirstName] = useState("");

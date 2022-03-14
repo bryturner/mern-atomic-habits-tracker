@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 import { NewHabitFormStyled } from "../../styles/Form.styled";
 
-function NewHabitForm({ getUserData }) {
+function NewHabitForm({ getHabits }) {
   const [habitTitle, setHabitTitle] = useState("");
   const [habitDescription, setHabitDescription] = useState("");
   const [habitFrequency, setHabitFrequency] = useState("");
@@ -22,12 +22,9 @@ function NewHabitForm({ getUserData }) {
         checkboxColor: checkboxColor,
       };
 
-      const newHabitResponse = await axios.put(
-        "http://localhost:5015/user/newHabit",
-        habitData
-      );
-      console.log(newHabitResponse);
-      getUserData();
+      await axios.put("http://localhost:5015/user/newHabit", habitData);
+
+      getHabits();
       setHabitTitle("");
       setHabitDescription("");
       setHabitFrequency("");

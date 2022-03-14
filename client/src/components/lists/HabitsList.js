@@ -4,16 +4,19 @@ import { ListStyled, ListItemStyled } from "../../styles/List.styled";
 import DeleteHabitButton from "../buttons/DeleteHabitButton";
 import EditHabitButton from "../buttons/EditHabitButton";
 
-function HabitsList({ habits, getUserData }) {
+function HabitsList({ habits, getHabits }) {
   function renderHabits() {
     return habits.map((habit, i) => {
       return (
         <ListItemStyled key={i}>
           <DeleteHabitButton
             habitTitle={habit.habitTitle}
-            getUserData={getUserData}
+            getHabits={getHabits}
           />
-          <EditHabitButton />
+          <EditHabitButton
+            habitTitle={habit.habitTitle}
+            getHabits={getHabits}
+          />
           <p>
             {habit.habitTitle},{habit.habitDescription},{habit.habitFrequency},
             {habit.habitDuration} minutes,{habit.checkboxColor}

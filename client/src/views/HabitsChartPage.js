@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import NewHabitForm from "../components/forms/NewHabitForm";
+
+import HabitsList from "../components/lists/HabitsList";
+import UserContext from "../context/UserContext";
 
 function HabitsChartPage() {
-  return <div>Habits Chart</div>;
+  const [userFirstName, setUserFirstName] = useState("");
+  const [habits, setHabits] = useState([]);
+
+  async function getUserData() {
+    const userResponse = await axios.get("http://localhost:5015/user/userData");
+
+    setUserFirstName(userResponse.data.firstName);
+
+    setHabits(userResponse.data.habits);
+  }
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  return (
+    <div>
+      <h2>Welcome {userFirstName}</h2>
+      <NewHabitForm getUserData={getUserData} />
+      <HabitsList habits={habits} />
+    </div>
+  );
 }
 
 export default HabitsChartPage;

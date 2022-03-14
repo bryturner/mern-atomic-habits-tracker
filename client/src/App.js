@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { AuthContextProvider } from "./context/AuthContext";
 import Router from "./routes/Router";
+import { UserContextProvider } from "./context/UserContext";
 
 axios.defaults.withCredentials = true;
 
@@ -11,9 +12,11 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
+        <UserContextProvider>
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </UserContextProvider>
       </AuthContextProvider>
     </>
   );

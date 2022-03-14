@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 
+import { NewHabitFormStyled } from "../../styles/Form.styled";
+
 function NewHabitForm({ getUserData }) {
   const [habitTitle, setHabitTitle] = useState("");
   const [habitDescription, setHabitDescription] = useState("");
@@ -10,6 +12,10 @@ function NewHabitForm({ getUserData }) {
 
   async function saveNewHabit(e) {
     e.preventDefault();
+
+    //  if (habitFrequency === "")
+    //    return alert("Please select how often you do your habit");
+
     try {
       const habitData = {
         habitTitle: habitTitle,
@@ -36,7 +42,7 @@ function NewHabitForm({ getUserData }) {
   }
 
   return (
-    <div>
+    <NewHabitFormStyled>
       <form onSubmit={saveNewHabit}>
         <input
           type="text"
@@ -65,6 +71,7 @@ function NewHabitForm({ getUserData }) {
           value={habitFrequency}
           required
         >
+          <option value="">How often?</option>
           <option value="Once per day">Once per day</option>
           <option value="Every other day">Every other day</option>
           <option value="2 or 3 per week">2 to 3 per week</option>
@@ -85,17 +92,23 @@ function NewHabitForm({ getUserData }) {
           />
           minutes
         </label>
-        <input
-          type="color"
-          onChange={(e) => {
-            setCheckboxColor(e.target.value);
-          }}
-          value={checkboxColor}
-          required
-        />
+        <label>
+          Choose a checkbox color:{" "}
+          <input
+            type="color"
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setCheckboxColor("#999999");
+              }
+              setCheckboxColor(e.target.value);
+            }}
+            value={checkboxColor}
+            required
+          />
+        </label>
         <button type="submit">Save Habit</button>
       </form>
-    </div>
+    </NewHabitFormStyled>
   );
 }
 

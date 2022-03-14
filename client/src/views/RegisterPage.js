@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import AuthContext from "../context/AuthContext";
+import { RegisterFormStyled } from "../styles/Form.styled";
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState("");
@@ -34,8 +35,8 @@ function RegisterPage() {
   }
 
   return (
-    <div>
-      <h1>Register new account</h1>
+    <RegisterFormStyled>
+      <h2>Register</h2>
       <form onSubmit={register}>
         <input
           type="text"
@@ -71,7 +72,10 @@ function RegisterPage() {
         />
         <button type="submit">Register</button>
       </form>
-    </div>
+      <p>
+        Already have an account? <Link to="/">Login</Link>
+      </p>
+    </RegisterFormStyled>
   );
 }
 

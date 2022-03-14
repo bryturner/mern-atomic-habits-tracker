@@ -4,19 +4,18 @@ import axios from "axios";
 
 import { AuthContextProvider } from "./context/AuthContext";
 import Router from "./routes/Router";
-import { UserContextProvider } from "./context/UserContext";
+import GlobalStyle from "./styles/Global.styled";
 
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <>
+      <GlobalStyle />
       <AuthContextProvider>
-        <UserContextProvider>
-          <BrowserRouter>
-            <Router />
-          </BrowserRouter>
-        </UserContextProvider>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
       </AuthContextProvider>
     </>
   );

@@ -1,16 +1,15 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import AuthContext from "../context/AuthContext";
-import UserContext from "../context/UserContext";
+import { LoginFormStyled } from "../styles/Form.styled";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { getLoggedIn } = useContext(AuthContext);
-  const { getUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -23,16 +22,16 @@ function LoginPage() {
         password,
       };
       await axios.post("http://localhost:5015/user/login", loginData);
-      //  .then((res) => getUserFirstName(res.data));
       await getLoggedIn();
-      await getUserData();
+
       navigate("/home");
     } catch (err) {
       console.error(err);
     }
   }
   return (
-    <div>
+    <LoginFormStyled>
+      <h2>Login</h2>
       <form onSubmit={login}>
         <input
           type="text"
@@ -49,7 +48,10 @@ function LoginPage() {
         />
         <button type="submit">Log In</button>
       </form>
-    </div>
+      <p>
+        Don't have an account yet? <Link to="/register">Register</Link>
+      </p>
+    </LoginFormStyled>
   );
 }
 

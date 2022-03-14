@@ -25,7 +25,7 @@ function HabitsChartPage() {
     <div>
       <h2>Welcome {userFirstName}</h2>
       <NewHabitForm getUserData={getUserData} />
-      <HabitsList habits={habits} />
+      <HabitsList habits={habits} getUserData={getUserData} />
     </div>
   );
 }

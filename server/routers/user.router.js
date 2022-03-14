@@ -342,6 +342,8 @@ router.delete("/habits", auth, async (req, res) => {
 
     const matchingUser = await User.findOne({ username });
 
+    const matchingUsername = matchingUser.username;
+
     const existingHabit = matchingUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
         return habit;
@@ -355,8 +357,6 @@ router.delete("/habits", auth, async (req, res) => {
     }
 
     const existingHabitTitle = existingHabit.habitTitle;
-
-    const matchingUsername = matchingUser.username;
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
         { username: matchingUsername },

@@ -13,9 +13,6 @@ function NewHabitForm({ getUserData }) {
   async function saveNewHabit(e) {
     e.preventDefault();
 
-    //  if (habitFrequency === "")
-    //    return alert("Please select how often you do your habit");
-
     try {
       const habitData = {
         habitTitle: habitTitle,
@@ -97,9 +94,9 @@ function NewHabitForm({ getUserData }) {
           <input
             type="color"
             onChange={(e) => {
-              if (e.target.value === "") {
-                setCheckboxColor("#999999");
-              }
+              //   if (e.target.value === "") {
+              //     setCheckboxColor("#ff0000");
+              //   }
               setCheckboxColor(e.target.value);
             }}
             value={checkboxColor}

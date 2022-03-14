@@ -151,30 +151,23 @@ router.get("/loggedIn", (req, res) => {
   }
 });
 
-// get matching user data
-router.get("/userData", auth, async (req, res) => {
+// get user habits
+router.get("/habits", auth, async (req, res) => {
   try {
     const { username } = req.cookies.userData;
 
     const verifiedUser = await verifyUsername(username);
 
-    const verifiedUserUsername = verifiedUser.username;
-    const { firstName, habits } = verifiedUser;
+    const { habits } = verifiedUser;
 
-    //  Data to send to client
-    const userData = {
-      username: verifiedUserUsername,
-      firstName: firstName,
-      habits: habits,
-    };
-    res.json(userData);
+    res.json(habits);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
 // Get users first name for welcome message
-router.get("/userFirstName", auth, async (req, res) => {
+router.get("/firstName", auth, async (req, res) => {
   try {
     const { username } = req.cookies.userData;
 
@@ -182,18 +175,8 @@ router.get("/userFirstName", auth, async (req, res) => {
 
     const { firstName } = verifiedUser;
     res.json(firstName);
-
-    //  const matchingUsername = matchingUser.username;
-
-    //  if (username !== matchingUsername)
-    //    return res
-    //      .status(400)
-    //      .json({ errorMessage: "No matching username was found in the DB" });
-
-    //  const userFirstName = matchingUser.firstName;
-    //  if (username === matchingUsername) return res.json(userFirstName);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -217,15 +200,6 @@ router.put("/newHabit", auth, async (req, res) => {
     };
 
     const { username } = req.cookies.userData;
-
-    //  if (!username)
-    //    return res.status(400).json({ errorMessage: "No username from body" });
-
-    //  const matchingUser = await User.findOne({ username });
-    //  if (!matchingUser)
-    //    return res.status(400).json({
-    //      errorMessage: "Username not found in database",
-    //    });
 
     const verifiedUser = await verifyUsername(username);
 
@@ -316,7 +290,7 @@ router.put("/editHabit", auth, async (req, res) => {
 });
 
 // delete a habit from the habits array based on the habit title
-router.delete("/habits", auth, async (req, res) => {
+router.delete("/deleteHabit", auth, async (req, res) => {
   try {
     const { habitTitle } = req.body;
     const { username } = req.cookies.userData;

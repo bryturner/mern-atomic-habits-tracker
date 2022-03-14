@@ -11,8 +11,6 @@ const verifyUsername = async function (username) {
     return res.status(400).json({
       errorMessage: "Username not found in database",
     });
-
-  console.log(matchingUser);
   return matchingUser;
 };
 

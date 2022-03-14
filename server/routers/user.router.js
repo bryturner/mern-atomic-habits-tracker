@@ -3,6 +3,7 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
+const verifyUsername = require("../utils/helpers");
 // Changing cookie username
 // Register user
 router.post("/register", async (req, res) => {
@@ -155,33 +156,18 @@ router.get("/userData", auth, async (req, res) => {
   try {
     const { username } = req.cookies.userData;
 
-    if (!username)
-      return res
-        .status(400)
-        .json({ errorMessage: "No username was found in the cookie" });
+    const verifiedUser = await verifyUsername(username);
 
-    const matchingUser = await User.findOne({ username });
-    if (!matchingUser)
-      return res.status(400).json({
-        errorMessage: "Username not found in database",
-      });
-
-    const matchingUsername = matchingUser.username;
-    const { firstName, habits } = matchingUser;
+    const verifiedUserUsername = verifiedUser.username;
+    const { firstName, habits } = verifiedUser;
 
     //  Data to send to client
     const userData = {
-      username: matchingUsername,
+      username: verifiedUserUsername,
       firstName: firstName,
       habits: habits,
     };
-
-    if (username !== matchingUsername)
-      return res
-        .status(400)
-        .json({ errorMessage: "No matching username was found in the DB" });
-
-    if (username === matchingUsername) return res.json(userData);
+    res.json(userData);
   } catch (err) {
     console.log(err);
   }
@@ -192,26 +178,20 @@ router.get("/userFirstName", auth, async (req, res) => {
   try {
     const { username } = req.cookies.userData;
 
-    if (!username)
-      return res
-        .status(400)
-        .json({ errorMessage: "No username was found in the cookie" });
+    const verifiedUser = await verifyUsername(username);
 
-    const matchingUser = await User.findOne({ username });
-    if (!matchingUser)
-      return res.status(400).json({
-        errorMessage: "Username not found in database",
-      });
+    const { firstName } = verifiedUser;
+    res.json(firstName);
 
-    const matchingUsername = matchingUser.username;
+    //  const matchingUsername = matchingUser.username;
 
-    if (username !== matchingUsername)
-      return res
-        .status(400)
-        .json({ errorMessage: "No matching username was found in the DB" });
+    //  if (username !== matchingUsername)
+    //    return res
+    //      .status(400)
+    //      .json({ errorMessage: "No matching username was found in the DB" });
 
-    const userFirstName = matchingUser.firstName;
-    if (username === matchingUsername) return res.json(userFirstName);
+    //  const userFirstName = matchingUser.firstName;
+    //  if (username === matchingUsername) return res.json(userFirstName);
   } catch (err) {
     console.log(err);
   }
@@ -238,25 +218,27 @@ router.put("/newHabit", auth, async (req, res) => {
 
     const { username } = req.cookies.userData;
 
-    if (!username)
-      return res.status(400).json({ errorMessage: "No username from body" });
+    //  if (!username)
+    //    return res.status(400).json({ errorMessage: "No username from body" });
 
-    const matchingUser = await User.findOne({ username });
-    if (!matchingUser)
-      return res.status(400).json({
-        errorMessage: "Username not found in database",
-      });
+    //  const matchingUser = await User.findOne({ username });
+    //  if (!matchingUser)
+    //    return res.status(400).json({
+    //      errorMessage: "Username not found in database",
+    //    });
 
-    const existingHabit = matchingUser.habits.find((habit) => {
+    const verifiedUser = await verifyUsername(username);
+
+    const existingHabit = verifiedUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
         return habit;
       }
     });
 
     if (existingHabit === undefined) {
-      const matchedUserId = matchingUser._id;
+      const verifiedUserId = verifiedUser._id;
       await User.updateOne(
-        { _id: matchedUserId },
+        { _id: verifiedUserId },
         { $push: { habits: newHabit } }
       );
       return res.json(`${newHabit.habitTitle} has been successfully added`);
@@ -286,16 +268,18 @@ router.put("/editHabit", auth, async (req, res) => {
 
     const { username } = req.cookies.userData;
 
-    if (!username)
-      return res.status(400).json({ errorMessage: "No username from body" });
+    //  if (!username)
+    //    return res.status(400).json({ errorMessage: "No username from body" });
 
-    const matchingUser = await User.findOne({ username });
-    if (!matchingUser)
-      return res.status(400).json({
-        errorMessage: "Username not found in database",
-      });
+    //  const matchingUser = await User.findOne({ username });
+    //  if (!matchingUser)
+    //    return res.status(400).json({
+    //      errorMessage: "Username not found in database",
+    //    });
 
-    const existingHabit = matchingUser.habits.find((habit) => {
+    const verifiedUser = await verifyUsername(username);
+
+    const existingHabit = verifiedUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
         return habit;
       }
@@ -308,12 +292,10 @@ router.put("/editHabit", auth, async (req, res) => {
     }
 
     const existingHabitTitle = existingHabit.habitTitle;
-
-    const matchingUsername = matchingUser.username;
-
+    const verifiedUserUsername = verifiedUser.username;
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
-        { username: matchingUsername },
+        { username: verifiedUserUsername },
         {
           $set: {
             habits: {
@@ -337,14 +319,11 @@ router.put("/editHabit", auth, async (req, res) => {
 router.delete("/habits", auth, async (req, res) => {
   try {
     const { habitTitle } = req.body;
-
     const { username } = req.cookies.userData;
 
-    const matchingUser = await User.findOne({ username });
+    const verifiedUser = await verifyUsername(username);
 
-    const matchingUsername = matchingUser.username;
-
-    const existingHabit = matchingUser.habits.find((habit) => {
+    const existingHabit = verifiedUser.habits.find((habit) => {
       if (habit.habitTitle === habitTitle) {
         return habit;
       }
@@ -356,10 +335,11 @@ router.delete("/habits", auth, async (req, res) => {
       });
     }
 
+    const verifiedUserUsername = verifiedUser.username;
     const existingHabitTitle = existingHabit.habitTitle;
     if (existingHabitTitle === habitTitle) {
       await User.updateOne(
-        { username: matchingUsername },
+        { username: verifiedUserUsername },
         { $pull: { habits: { habitTitle: habitTitle } } }
       );
       res.json(`You have successfully deleted ${habitTitle}`);

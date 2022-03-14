@@ -10,11 +10,17 @@ function HabitsChartPage() {
   const [habits, setHabits] = useState([]);
 
   async function getUserData() {
-    const userResponse = await axios.get("http://localhost:5015/user/userData");
+    try {
+      const userResponse = await axios.get(
+        "http://localhost:5015/user/userData"
+      );
 
-    setUserFirstName(userResponse.data.firstName);
+      setUserFirstName(userResponse.data.firstName);
 
-    setHabits(userResponse.data.habits);
+      setHabits(userResponse.data.habits);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   useEffect(() => {

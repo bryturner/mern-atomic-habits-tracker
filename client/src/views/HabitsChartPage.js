@@ -1,31 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import NewHabitForm from "../components/forms/NewHabitForm";
 
 import HabitsList from "../components/lists/HabitsList";
-// import UserContext from "../context/UserContext";
+import UserContext from "../context/UserContext";
 
 function HabitsChartPage() {
   const [userFirstName, setUserFirstName] = useState("");
   const [habits, setHabits] = useState([]);
 
-  async function getUserData() {
-    const userResponse = await axios.get("http://localhost:5015/user/userData");
+  const { userData, getUserData } = useContext(UserContext);
 
-    setUserFirstName(userResponse.data.firstName);
+  //   async function getUserFirstName() {
+  //     await getUserData();
+  //     const { firstName } = userData;
+  //     setUserFirstName(firstName);
+  //   }
 
-    setHabits(userResponse.data.habits);
+  //   async function getUserHabits() {
+  //     await getUserData();
+  //     const { habits } = userData;
+  //     setHabits(habits);
+  //   }
+
+  async function getUserInfo() {
+    try {
+      await getUserData();
+
+      const { habits, firstName } = userData;
+
+      console.log(habits, firstName);
+
+      setUserFirstName(firstName);
+      setHabits(habits);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
+  //   useEffect(() => {
+  //     getUserFirstName();
+  //   }, []);
+
   useEffect(() => {
-    getUserData();
+    getUserInfo();
   }, []);
 
   return (
     <div>
-      <h2>Welcome {userFirstName}</h2>
-      <NewHabitForm getUserData={getUserData} />
-      <HabitsList habits={habits} getUserData={getUserData} />
+      {/* <h2>Welcome {userFirstName}</h2> */}
+      {/* <NewHabitForm />
+      <HabitsList /> */}
     </div>
   );
 }

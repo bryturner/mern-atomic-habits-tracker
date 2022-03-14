@@ -23,7 +23,6 @@ function LoginPage() {
       };
       await axios.post("http://localhost:5015/user/login", loginData);
       await getLoggedIn();
-
       navigate("/home");
     } catch (err) {
       console.error(err);

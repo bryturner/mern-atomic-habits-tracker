@@ -180,6 +180,32 @@ router.get("/firstName", auth, async (req, res) => {
   }
 });
 
+// Get habit info to display in edit form
+router.get("/editHabit", auth, async (req, res) => {
+  try {
+    const { habitTitle } = req.query;
+    const { username } = req.cookies.userData;
+
+    const verifiedUser = await verifyUsername(username);
+
+    const existingHabit = verifiedUser.habits.find((habit) => {
+      if (habit.habitTitle === habitTitle) {
+        return habit;
+      }
+    });
+
+    if (existingHabit === undefined) {
+      return res.json({
+        errorMessage: `The habit title ${habitTitle} does not exist`,
+      });
+    }
+
+    res.json(existingHabit);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 // Add a new habit to the user habits array
 router.put("/newHabit", auth, async (req, res) => {
   try {
@@ -241,15 +267,6 @@ router.put("/editHabit", auth, async (req, res) => {
     } = req.body;
 
     const { username } = req.cookies.userData;
-
-    //  if (!username)
-    //    return res.status(400).json({ errorMessage: "No username from body" });
-
-    //  const matchingUser = await User.findOne({ username });
-    //  if (!matchingUser)
-    //    return res.status(400).json({
-    //      errorMessage: "Username not found in database",
-    //    });
 
     const verifiedUser = await verifyUsername(username);
 

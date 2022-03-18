@@ -5,7 +5,7 @@ import NewHabitForm from "../components/forms/NewHabitForm";
 import HabitsList from "../components/lists/HabitsList";
 
 function HabitsChartPage() {
-  const [userFirstName, setUserFirstName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [habits, setHabits] = useState([]);
 
   async function getFirstName() {
@@ -13,7 +13,7 @@ function HabitsChartPage() {
       const firstNameResponse = await axios.get(
         "http://localhost:5015/user/firstName"
       );
-      setUserFirstName(firstNameResponse.data);
+      setFirstName(firstNameResponse.data);
     } catch (err) {
       console.error(err);
     }
@@ -40,7 +40,7 @@ function HabitsChartPage() {
 
   return (
     <div>
-      <h2>Welcome {userFirstName}</h2>
+      <h2>Welcome {firstName}</h2>
       <NewHabitForm getHabits={getHabits} />
       <HabitsList habits={habits} getHabits={getHabits} />
     </div>

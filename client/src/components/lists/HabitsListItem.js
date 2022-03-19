@@ -16,7 +16,7 @@ function HabitsListItem({ habit }) {
           <li>Duration: {habit.habitDuration} minutes</li>
         </ul>
       </HabitDetailsStyled>
-      <div>
+      {/* <div>
         <input type="checkbox" />
         <input type="checkbox" />
         <input type="checkbox" />
@@ -27,7 +27,7 @@ function HabitsListItem({ habit }) {
         <input type="checkbox" />
         <input type="checkbox" />
         <input type="checkbox" />
-      </div>
+      </div> */}
     </HabitListItemStyled>
   );
 }

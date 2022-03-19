@@ -1,10 +1,14 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 
-import { AddHabitButtonStyled, ButtonStyled } from '../../styles/Button.styled';
+import {
+  ButtonStyled,
+  CloseButtonStyled,
+  SaveHabitButton,
+} from '../../styles/Button.styled';
 import { NewHabitFormStyled } from '../../styles/Form.styled';
-import { NewHabitButtonsWrapperStyled } from '../../styles/Wrappers.styled';
-import { NewHabitFormContainerStyled } from '../../styles/Containers.styled.js';
+import { LabelInputWrapper } from '../../styles/Wrappers.styled';
+import { NewHabitFormContainer } from '../../styles/Containers.styled.js';
 import HabitFormContext from '../../context/HabitFormContext';
 
 function NewHabitForm({ getHabits }) {
@@ -15,8 +19,6 @@ function NewHabitForm({ getHabits }) {
   const [habitFrequency, setHabitFrequency] = useState('');
   const [habitDuration, setHabitDuration] = useState('');
   const [checkboxColor, setCheckboxColor] = useState('#ff0000');
-  //   const [showNewHabitForm, setShowNewHabitForm] = useState(false);
-  //   const [showAddHabitButton, setShowAddHabitButton] = useState(true);
 
   async function saveNewHabit(e) {
     e.preventDefault();
@@ -43,18 +45,16 @@ function NewHabitForm({ getHabits }) {
     }
   }
 
-  //   function toggleNewHabitForm() {
-  //     setShowNewHabitForm(!showNewHabitForm);
-  //     setShowAddHabitButton(!showAddHabitButton);
-  //   }
-
   return (
     <>
-      <NewHabitFormContainerStyled>
+      <NewHabitFormContainer>
         <NewHabitFormStyled toggle={showHabitForm} onSubmit={saveNewHabit}>
+          <CloseButtonStyled type="button" onClick={toggleHabitForm}>
+            X
+          </CloseButtonStyled>
           <h2>New Habit</h2>
-          <label>
-            New Habit Title:
+          <LabelInputWrapper>
+            <label>New Habit Title:</label>
             <input
               type="text"
               placeholder="Running"
@@ -65,13 +65,14 @@ function NewHabitForm({ getHabits }) {
               autoFocus
               required
             />
-          </label>
-          <div>
+          </LabelInputWrapper>
+
+          <LabelInputWrapper>
             <label htmlFor="habit-description">Describe your new habit</label>
             <textarea
               id="habit-description"
               placeholder="I will run 3 miles per week"
-              rows="5"
+              rows="3"
               cols="33"
               onChange={e => {
                 setHabitDescription(e.target.value);
@@ -79,10 +80,9 @@ function NewHabitForm({ getHabits }) {
               value={habitDescription}
               required
             />
-          </div>
-
-          <label>
-            How often will you complete your new habit?
+          </LabelInputWrapper>
+          <LabelInputWrapper>
+            <label>How often will you complete your new habit?</label>
             <select
               onChange={e => {
                 setHabitFrequency(e.target.value);
@@ -96,26 +96,28 @@ function NewHabitForm({ getHabits }) {
               <option value="2 or 3 per week">2 to 3 per week</option>
               <option value="Once per week">Once per week</option>
             </select>
-          </label>
+          </LabelInputWrapper>
+          <LabelInputWrapper>
+            <label>How many minutes does your habit take?</label>
+            <div>
+              <input
+                type="number"
+                min="1"
+                max="180"
+                onChange={e => {
+                  setHabitDuration(e.target.value);
+                }}
+                value={habitDuration}
+                required
+              />
+              <span>minutes</span>
+            </div>
+          </LabelInputWrapper>
 
           <label>
-            How many minutes does your habit take?
+            Choose a color for your checkboxes:{' '}
             <input
-              type="number"
-              min="5"
-              max="180"
-              step="5"
-              onChange={e => {
-                setHabitDuration(e.target.value);
-              }}
-              value={habitDuration}
-              required
-            />
-            minutes
-          </label>
-          <label>
-            Choose a color for your habit checkboxes:{' '}
-            <input
+              className="colorPicker"
               type="color"
               onChange={e => {
                 setCheckboxColor(e.target.value);
@@ -124,20 +126,10 @@ function NewHabitForm({ getHabits }) {
               required
             />
           </label>
-          <NewHabitButtonsWrapperStyled>
-            <ButtonStyled type="submit">Save Habit</ButtonStyled>
-            <ButtonStyled type="button" onClick={toggleHabitForm}>
-              Close
-            </ButtonStyled>
-          </NewHabitButtonsWrapperStyled>
+
+          <SaveHabitButton type="submit">Save Habit</SaveHabitButton>
         </NewHabitFormStyled>
-      </NewHabitFormContainerStyled>
-      {/* <AddHabitButtonStyled
-        onClick={toggleNewHabitForm}
-        toggle={showAddHabitButton}
-      >
-        Add new habit
-      </AddHabitButtonStyled> */}
+      </NewHabitFormContainer>
     </>
   );
 }

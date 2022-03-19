@@ -5,11 +5,7 @@ import { AddHabitButtonStyled } from '../../styles/Button.styled';
 function AddHabitButton() {
   const { toggleHabitForm } = useContext(HabitFormContext);
 
-  return (
-    <AddHabitButtonStyled onClick={toggleHabitForm}>
-      Add Habit
-    </AddHabitButtonStyled>
-  );
+  return <button onClick={toggleHabitForm}>Add Habit</button>;
 }
 
 export default AddHabitButton;

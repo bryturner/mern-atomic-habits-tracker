@@ -9,15 +9,12 @@ export const BodyContainer = styled.div`
 
 export const FormContainer = styled.div`
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
 `;
 
-export const NewHabitFormContainerStyled = styled(FormContainer)`
+export const NewHabitFormContainer = styled(FormContainer)`
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, -10%);
   z-index: 10;
 `;

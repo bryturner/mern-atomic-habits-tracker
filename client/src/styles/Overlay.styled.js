@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const OverlayStyled = styled.div`
+  display: ${props => (props.toggle ? 'block' : 'none')};
   position: absolute;
   width: 100%;
   height: 100%;

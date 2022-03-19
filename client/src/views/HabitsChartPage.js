@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import NewHabitForm from '../components/forms/NewHabitForm';
 import HabitsList from '../components/lists/HabitsList';
+import { AddHabitButtonStyled } from '../styles/Button.styled';
+import AddHabitButton from '../components/buttons/AddHabitButton';
 
 function HabitsChartPage() {
   const [firstName, setFirstName] = useState('');
@@ -42,6 +44,7 @@ function HabitsChartPage() {
     <>
       <h2>Welcome {firstName}</h2>
       <HabitsList habits={habits} getHabits={getHabits} />
+      <AddHabitButton />
       <NewHabitForm getHabits={getHabits} />
     </>
   );

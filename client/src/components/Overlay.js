@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import HabitFormContext from '../context/HabitFormContext';
 import { OverlayStyled } from '../styles/Overlay.styled';
 
 function Overlay() {
-  return <OverlayStyled />;
+  const { showOverlay } = useContext(HabitFormContext);
+  return <OverlayStyled toggle={showOverlay} />;
 }
 
 export default Overlay;

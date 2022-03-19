@@ -1,19 +1,22 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { AddHabitButtonStyled, ButtonStyled } from '../../styles/Button.styled';
 import { NewHabitFormStyled } from '../../styles/Form.styled';
 import { NewHabitButtonsWrapperStyled } from '../../styles/Wrappers.styled';
 import { NewHabitFormContainerStyled } from '../../styles/Containers.styled.js';
+import HabitFormContext from '../../context/HabitFormContext';
 
 function NewHabitForm({ getHabits }) {
+  const { toggleHabitForm, showHabitForm } = useContext(HabitFormContext);
+
   const [habitTitle, setHabitTitle] = useState('');
   const [habitDescription, setHabitDescription] = useState('');
   const [habitFrequency, setHabitFrequency] = useState('');
   const [habitDuration, setHabitDuration] = useState('');
   const [checkboxColor, setCheckboxColor] = useState('#ff0000');
-  const [showNewHabitForm, setShowNewHabitForm] = useState(false);
-  const [showAddHabitButton, setShowAddHabitButton] = useState(true);
+  //   const [showNewHabitForm, setShowNewHabitForm] = useState(false);
+  //   const [showAddHabitButton, setShowAddHabitButton] = useState(true);
 
   async function saveNewHabit(e) {
     e.preventDefault();
@@ -29,7 +32,7 @@ function NewHabitForm({ getHabits }) {
       await axios.put('http://localhost:5015/user/newHabit', habitData);
 
       getHabits();
-      toggleNewHabitForm();
+      toggleHabitForm();
       setHabitTitle('');
       setHabitDescription('');
       setHabitFrequency('');
@@ -40,15 +43,15 @@ function NewHabitForm({ getHabits }) {
     }
   }
 
-  function toggleNewHabitForm() {
-    setShowNewHabitForm(!showNewHabitForm);
-    setShowAddHabitButton(!showAddHabitButton);
-  }
+  //   function toggleNewHabitForm() {
+  //     setShowNewHabitForm(!showNewHabitForm);
+  //     setShowAddHabitButton(!showAddHabitButton);
+  //   }
 
   return (
     <>
       <NewHabitFormContainerStyled>
-        <NewHabitFormStyled toggle={showNewHabitForm} onSubmit={saveNewHabit}>
+        <NewHabitFormStyled toggle={showHabitForm} onSubmit={saveNewHabit}>
           <h2>New Habit</h2>
           <label>
             New Habit Title:
@@ -123,18 +126,18 @@ function NewHabitForm({ getHabits }) {
           </label>
           <NewHabitButtonsWrapperStyled>
             <ButtonStyled type="submit">Save Habit</ButtonStyled>
-            <ButtonStyled type="button" onClick={toggleNewHabitForm}>
+            <ButtonStyled type="button" onClick={toggleHabitForm}>
               Close
             </ButtonStyled>
           </NewHabitButtonsWrapperStyled>
         </NewHabitFormStyled>
       </NewHabitFormContainerStyled>
-      <AddHabitButtonStyled
+      {/* <AddHabitButtonStyled
         onClick={toggleNewHabitForm}
         toggle={showAddHabitButton}
       >
         Add new habit
-      </AddHabitButtonStyled>
+      </AddHabitButtonStyled> */}
     </>
   );
 }

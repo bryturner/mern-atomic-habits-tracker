@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ButtonStyled = styled.button`
   cursor: pointer;
@@ -9,5 +9,5 @@ export const ButtonStyled = styled.button`
 `;
 
 export const AddHabitButtonStyled = styled(ButtonStyled)`
-  display: ${(props) => (props.toggle ? "block" : "none")};
+  /* display: ${props => (props.toggle ? 'block' : 'none')}; */
 `;

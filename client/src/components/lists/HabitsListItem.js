@@ -7,7 +7,7 @@ import {
 
 function HabitsListItem({ habit }) {
   return (
-    <HabitListItemStyled>
+    <>
       <HabitTitleStyled>{habit.habitTitle}</HabitTitleStyled>
       <HabitDetailsStyled>
         <ul>
@@ -16,7 +16,7 @@ function HabitsListItem({ habit }) {
           <li>Duration: {habit.habitDuration} minutes</li>
         </ul>
       </HabitDetailsStyled>
-      <div>
+      <HabitListItemStyled>
         <input type="checkbox" />
         <input type="checkbox" />
         <input type="checkbox" />
@@ -27,8 +27,8 @@ function HabitsListItem({ habit }) {
         <input type="checkbox" />
         <input type="checkbox" />
         <input type="checkbox" />
-      </div>
-    </HabitListItemStyled>
+      </HabitListItemStyled>
+    </>
   );
 }
 

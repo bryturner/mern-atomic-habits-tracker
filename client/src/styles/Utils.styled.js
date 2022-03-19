@@ -5,3 +5,8 @@ export const FlexColumn = styled.div`
   flex-direction: column;
   gap: ${props => props.gapRem};
 `;
+
+export const FlexRow = styled.div`
+  display: flex;
+  gap: ${props => props.gapRem};
+`;

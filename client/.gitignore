@@ -13,6 +13,7 @@
 
 # misc
 Notes.md
+.prettierrc
 .DS_Store
 .env.local
 .env.development.local

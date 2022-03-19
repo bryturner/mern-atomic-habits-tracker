@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import AuthContext from "../context/AuthContext";
+import AuthContext from '../context/AuthContext';
 
-import Navbar from "../layout/Navbar";
-import RegisterPage from "../views/RegisterPage";
-import LoginPage from "../views/LoginPage";
-import LogoutPage from "../views/LogoutPage";
-import HabitsChartPage from "../views/HabitsChartPage";
+import Navbar from '../layout/Navbar';
+import RegisterPage from '../views/RegisterPage';
+import LoginPage from '../views/LoginPage';
+import LogoutPage from '../views/LogoutPage';
+import HabitsChartPage from '../views/HabitsChartPage';
 
-import { BodyContainer } from "../styles/Containers.styled";
+import { BodyContainer } from '../styles/Containers.styled';
+import Overlay from '../components/Overlay';
 
 function Router() {
   const { loggedIn } = useContext(AuthContext);
@@ -33,6 +34,7 @@ function Router() {
           )}
         </Routes>
       </BodyContainer>
+      {/* <Overlay /> */}
     </>
   );
 }

@@ -1,16 +1,17 @@
-import axios from "axios";
-import React, { useState } from "react";
+import axios from 'axios';
+import React, { useState } from 'react';
 
-import { AddHabitButtonStyled, ButtonStyled } from "../../styles/Button.styled";
-import { NewHabitFormStyled } from "../../styles/Form.styled";
-import { NewHabitButtonsWrapperStyled } from "../../styles/Wrappers.styled";
+import { AddHabitButtonStyled, ButtonStyled } from '../../styles/Button.styled';
+import { NewHabitFormStyled } from '../../styles/Form.styled';
+import { NewHabitButtonsWrapperStyled } from '../../styles/Wrappers.styled';
+import { NewHabitFormContainerStyled } from '../../styles/Containers.styled.js';
 
 function NewHabitForm({ getHabits }) {
-  const [habitTitle, setHabitTitle] = useState("");
-  const [habitDescription, setHabitDescription] = useState("");
-  const [habitFrequency, setHabitFrequency] = useState("");
-  const [habitDuration, setHabitDuration] = useState("");
-  const [checkboxColor, setCheckboxColor] = useState("#ff0000");
+  const [habitTitle, setHabitTitle] = useState('');
+  const [habitDescription, setHabitDescription] = useState('');
+  const [habitFrequency, setHabitFrequency] = useState('');
+  const [habitDuration, setHabitDuration] = useState('');
+  const [checkboxColor, setCheckboxColor] = useState('#ff0000');
   const [showNewHabitForm, setShowNewHabitForm] = useState(false);
   const [showAddHabitButton, setShowAddHabitButton] = useState(true);
 
@@ -25,15 +26,15 @@ function NewHabitForm({ getHabits }) {
         checkboxColor: checkboxColor,
       };
 
-      await axios.put("http://localhost:5015/user/newHabit", habitData);
+      await axios.put('http://localhost:5015/user/newHabit', habitData);
 
       getHabits();
       toggleNewHabitForm();
-      setHabitTitle("");
-      setHabitDescription("");
-      setHabitFrequency("");
-      setHabitDuration("");
-      setCheckboxColor("");
+      setHabitTitle('');
+      setHabitDescription('');
+      setHabitFrequency('');
+      setHabitDuration('');
+      setCheckboxColor('');
     } catch (err) {
       console.error(err);
     }
@@ -46,15 +47,15 @@ function NewHabitForm({ getHabits }) {
 
   return (
     <>
-      <NewHabitFormStyled toggle={showNewHabitForm}>
-        <h2>New Habit</h2>
-        <form onSubmit={saveNewHabit}>
+      <NewHabitFormContainerStyled>
+        <NewHabitFormStyled toggle={showNewHabitForm} onSubmit={saveNewHabit}>
+          <h2>New Habit</h2>
           <label>
             New Habit Title:
             <input
               type="text"
               placeholder="Running"
-              onChange={(e) => {
+              onChange={e => {
                 setHabitTitle(e.target.value);
               }}
               value={habitTitle}
@@ -69,7 +70,7 @@ function NewHabitForm({ getHabits }) {
               placeholder="I will run 3 miles per week"
               rows="5"
               cols="33"
-              onChange={(e) => {
+              onChange={e => {
                 setHabitDescription(e.target.value);
               }}
               value={habitDescription}
@@ -80,7 +81,7 @@ function NewHabitForm({ getHabits }) {
           <label>
             How often will you complete your new habit?
             <select
-              onChange={(e) => {
+              onChange={e => {
                 setHabitFrequency(e.target.value);
               }}
               value={habitFrequency}
@@ -101,7 +102,7 @@ function NewHabitForm({ getHabits }) {
               min="5"
               max="180"
               step="5"
-              onChange={(e) => {
+              onChange={e => {
                 setHabitDuration(e.target.value);
               }}
               value={habitDuration}
@@ -110,10 +111,10 @@ function NewHabitForm({ getHabits }) {
             minutes
           </label>
           <label>
-            Choose a color for your habit checkboxes:{" "}
+            Choose a color for your habit checkboxes:{' '}
             <input
               type="color"
-              onChange={(e) => {
+              onChange={e => {
                 setCheckboxColor(e.target.value);
               }}
               value={checkboxColor}
@@ -126,8 +127,8 @@ function NewHabitForm({ getHabits }) {
               Close
             </ButtonStyled>
           </NewHabitButtonsWrapperStyled>
-        </form>
-      </NewHabitFormStyled>
+        </NewHabitFormStyled>
+      </NewHabitFormContainerStyled>
       <AddHabitButtonStyled
         onClick={toggleNewHabitForm}
         toggle={showAddHabitButton}

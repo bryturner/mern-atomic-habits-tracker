@@ -10,6 +10,7 @@ import { NewHabitFormStyled } from '../../styles/Form.styled';
 import { LabelInputWrapper } from '../../styles/Wrappers.styled';
 import { NewHabitFormContainer } from '../../styles/Containers.styled.js';
 import HabitFormContext from '../../context/HabitFormContext';
+import TextInput from '../inputs/TextInput';
 
 function NewHabitForm({ getHabits }) {
   const { toggleHabitForm, showHabitForm } = useContext(HabitFormContext);
@@ -55,7 +56,15 @@ function NewHabitForm({ getHabits }) {
           <h2>New Habit</h2>
           <LabelInputWrapper>
             <label>New Habit Title:</label>
-            <input
+            <TextInput
+              placeholder="Running"
+              onChange={e => {
+                setHabitTitle(e.target.value);
+              }}
+              value={habitTitle}
+              autoFocus
+            />
+            {/* <input
               type="text"
               placeholder="Running"
               onChange={e => {
@@ -64,7 +73,7 @@ function NewHabitForm({ getHabits }) {
               value={habitTitle}
               autoFocus
               required
-            />
+            /> */}
           </LabelInputWrapper>
 
           <LabelInputWrapper>

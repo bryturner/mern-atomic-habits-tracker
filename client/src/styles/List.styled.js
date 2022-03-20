@@ -13,10 +13,8 @@ export const ListItemStyled = styled.li`
   gap: 2.4rem;
 `;
 
-export const HabitListItemStyled = styled.div`
+export const HabitListItemStyled = styled.td`
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
 `;
 
 export const HabitTitleStyled = styled.h3`
@@ -36,3 +34,5 @@ export const HabitDetailsStyled = styled.div`
     list-style: none;
   }
 `;
+
+export const HabitCheckBoxStyled = styled.input``;

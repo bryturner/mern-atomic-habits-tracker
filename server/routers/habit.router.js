@@ -1,21 +1,47 @@
 const router = require("express").Router();
-const Habit = require("../models/habit.model");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
-const verifyUsername = require("../utils/helpers");
-const verifyId = require("../utils/helpers");
+const Habit = require("../models/habit.model");
 
-// get user habits
-router.get("/habits", auth, async (req, res) => {
+// get user habits list
+router.get("/habitList", auth, async (req, res) => {
   try {
-    const { username } = req.cookies.userData;
+    const { id } = req.cookies.userData;
 
-    //  const verifiedUser = await verifyUsername(username);
+    const matchingUser = await Habit.findOne({ userId: id });
 
-    //  const { habits } = verifiedUser;
+    const { habits } = matchingUser;
 
     res.json(habits);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// get all ids and habits
+// ******for dev
+router.get("/", auth, async (req, res) => {
+  try {
+    const userIdHabits = await Habit.find();
+    res.send(userIdHabits);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// initialize habits db with userId
+router.post("/", auth, async (req, res) => {
+  try {
+    const { id } = req.cookies.userData;
+    const userId = id;
+    const habits = [];
+
+    const initIdHabits = new Habit({
+      userId,
+      habits,
+    });
+
+    await initIdHabits.save();
+    res.send();
   } catch (err) {
     console.error(err);
   }
@@ -44,81 +70,22 @@ router.put("/newHabit", auth, async (req, res) => {
 
     const { id } = req.cookies.userData;
 
-    const matchingId = await Habit.findOne({ id });
-    //  const verifiedUser = await verifyId(id);
+    const matchingUser = await Habit.findOne({ userId: id });
 
-    //  const existingHabit = verifiedUser.habits.find((habit) => {
-    //    if (habit.habitTitle === habitTitle) {
-    //      return habit;
-    //    }
-    //  });
+    const { habits } = matchingUser;
 
-    if (existingHabit === undefined) {
-      const verifiedUserId = verifiedUser._id;
-      await User.updateOne(
-        { _id: verifiedUserId },
-        { $push: { habits: newHabit } }
-      );
-      return res.json(`${newHabit.habitTitle} has been successfully added`);
-    }
-
-    const existingHabitTitle = existingHabit.habitTitle;
-    if (existingHabitTitle === habitTitle) {
-      return res.json(
-        `A habit with the title ${existingHabit.habitTitle} already exists`
-      );
-    }
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-// Edit/Update a specific habit
-router.put("/editHabit", auth, async (req, res) => {
-  try {
-    const {
-      habitTitle,
-      habitDescription,
-      habitFrequency,
-      habitDuration,
-      checkboxColor,
-    } = req.body;
-
-    const { username } = req.cookies.userData;
-
-    const verifiedUser = await verifyUsername(username);
-
-    const existingHabit = verifiedUser.habits.find((habit) => {
-      if (habit.habitTitle === habitTitle) {
-        return habit;
+    for (let i = 0; i < habits.length; i++) {
+      if (habits[i].habitTitle === habitTitle) {
+        return res.json(`${habitTitle} already exists`);
       }
-    });
-
-    if (existingHabit === undefined) {
-      return res.status(400).json({
-        errorMessage: "Habit cannot be found",
-      });
     }
 
-    const existingHabitTitle = existingHabit.habitTitle;
-    const verifiedUserUsername = verifiedUser.username;
-    if (existingHabitTitle === habitTitle) {
-      await User.updateOne(
-        { username: verifiedUserUsername },
-        {
-          $set: {
-            habits: {
-              habitTitle: habitTitle,
-              habitDescription: habitDescription,
-              habitFrequency: habitFrequency,
-              habitDuration: habitDuration,
-              checkboxColor: checkboxColor,
-            },
-          },
-        }
-      );
-      return res.json(`${habitTitle} has been successfully updated`);
-    }
+    await Habit.updateOne(
+      { userId: matchingUser.userId },
+      { $push: { habits: newHabit } }
+    );
+
+    res.send();
   } catch (err) {
     console.error(err);
   }
@@ -128,30 +95,20 @@ router.put("/editHabit", auth, async (req, res) => {
 router.delete("/deleteHabit", auth, async (req, res) => {
   try {
     const { habitTitle } = req.body;
-    const { username } = req.cookies.userData;
+    const { id } = req.cookies.userData;
 
-    const verifiedUser = await verifyUsername(username);
+    const matchingUser = await Habit.findOne({ userId: id });
 
-    const existingHabit = verifiedUser.habits.find((habit) => {
-      if (habit.habitTitle === habitTitle) {
-        return habit;
+    const { habits } = matchingUser;
+
+    for (let i = 0; i < habits.length; i++) {
+      if (habits[i].habitTitle === habitTitle) {
+        await Habit.updateOne(
+          { userId: matchingUser.userId },
+          { $pull: { habits: { habitTitle: habitTitle } } }
+        );
+        return res.json(`${habitTitle} has been deleted`);
       }
-    });
-
-    if (existingHabit === undefined) {
-      return res.json({
-        errorMessage: `The habit title ${habitTitle} does not exist`,
-      });
-    }
-
-    const verifiedUserUsername = verifiedUser.username;
-    const existingHabitTitle = existingHabit.habitTitle;
-    if (existingHabitTitle === habitTitle) {
-      await User.updateOne(
-        { username: verifiedUserUsername },
-        { $pull: { habits: { habitTitle: habitTitle } } }
-      );
-      res.json(`You have successfully deleted ${habitTitle}`);
     }
   } catch (err) {
     console.error(err);

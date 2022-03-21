@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 5015;
+const PORT = process.env.PORT || 5020;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 app.use(express.json());
@@ -27,4 +27,4 @@ mongoose.connect(
 );
 
 app.use("/user", require("./routers/user.router"));
-// app.use("/habit", require("./routers/habit.router"));
+app.use("/habit", require("./routers/habit.router"));

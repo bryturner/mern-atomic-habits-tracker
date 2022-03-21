@@ -1,17 +1,18 @@
 const User = require("../models/user.model");
 
-const verifyUsername = async function (username) {
-  if (!username)
+const verifyId = async function (id) {
+  if (!id)
     return res
       .status(400)
-      .json({ errorMessage: "No username was found in the cookie" });
+      .json({ errorMessage: "No id was found in the cookie" });
 
-  const matchingUser = await User.findOne({ username });
+  const matchingUser = await User.findOne({ _id: id });
+
   if (!matchingUser)
     return res.status(400).json({
-      errorMessage: "Username not found in database",
+      errorMessage: "Id not found in database",
     });
   return matchingUser;
 };
 
-module.exports = verifyUsername;
+module.exports = verifyId;

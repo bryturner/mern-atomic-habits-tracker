@@ -1,10 +1,10 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 
 function DeleteHabitButton({ habitTitle, getHabits }) {
   async function deleteHabit() {
     try {
-      await axios.delete("http://localhost:5015/user/deleteHabit", {
+      await axios.delete('http://localhost:5020/habit/deleteHabit', {
         data: { habitTitle: habitTitle },
       });
       getHabits();

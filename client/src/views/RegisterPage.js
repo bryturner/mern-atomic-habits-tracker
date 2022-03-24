@@ -1,16 +1,16 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-import AuthContext from "../context/AuthContext";
-import { RegisterFormStyled } from "../styles/Form.styled";
+import AuthContext from '../context/AuthContext';
+import { RegisterFormStyled } from '../styles/Form.styled';
 
 function RegisterPage() {
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVerify, setPasswordVerify] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVerify, setPasswordVerify] = useState('');
 
   const { getLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -26,9 +26,9 @@ function RegisterPage() {
         password,
         passwordVerify,
       };
-      await axios.post("http://localhost:5015/user/register", registerData);
+      await axios.post('http://localhost:5020/user/register', registerData);
       await getLoggedIn();
-      navigate("/home");
+      navigate('/home');
     } catch (err) {
       console.error(err);
     }
@@ -42,32 +42,32 @@ function RegisterPage() {
           type="text"
           placeholder="First Name"
           autoFocus
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={e => setFirstName(e.target.value)}
           value={firstName}
         />
         <input
           type="email"
           placeholder="name@email.com"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           value={email}
         />
         <input
           type="text"
           placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           value={username}
         />
 
         <input
           type="password"
           placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           value={password}
         />
         <input
           type="password"
           placeholder="verify password"
-          onChange={(e) => setPasswordVerify(e.target.value)}
+          onChange={e => setPasswordVerify(e.target.value)}
           value={passwordVerify}
         />
         <button type="submit">Register</button>

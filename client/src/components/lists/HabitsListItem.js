@@ -1,35 +1,60 @@
-import React from 'react';
-import {
-  HabitDetailsStyled,
-  HabitListItemStyled,
-  HabitTitleStyled,
-} from '../../styles/List.styled';
+import React, { useState } from 'react';
+import axios from 'axios';
+import DeleteHabitButton from '../buttons/DeleteHabitButton';
+import { TableData, TableRow } from '../table';
+import { createNumArray } from '../../utils/helpers';
+import CheckboxInput from '../inputs/CheckboxInput';
 
-function HabitsListItem({ habit }) {
-  return (
-    <HabitListItemStyled>
-      <HabitTitleStyled>{habit.habitTitle}</HabitTitleStyled>
-      <HabitDetailsStyled>
-        <ul>
-          <li>Description: {habit.habitDescription}</li>
-          <li>Frequency: {habit.habitFrequency}</li>
-          <li>Duration: {habit.habitDuration} minutes</li>
-        </ul>
-      </HabitDetailsStyled>
-      {/* <div>
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-        <input type="checkbox" />
-      </div> */}
-    </HabitListItemStyled>
-  );
+function HabitListItem({ daysInCurMonth, habits, getHabits }) {
+  const [boxChecked, setBoxChecked] = useState(false);
+
+  function renderHabit() {
+    return habits.map((habit, i) => {
+      const { habitTitle, checkboxesChecked } = habit;
+
+      return (
+        <TableRow key={i}>
+          <TableData>
+            <DeleteHabitButton habitTitle={habitTitle} getHabits={getHabits} />
+          </TableData>
+          <TableData>
+            <h2>{habitTitle}</h2>
+          </TableData>
+          {renderCheckboxes(
+            daysInCurMonth,
+            habitTitle,
+            checkboxesChecked,
+            getHabits
+          )}
+        </TableRow>
+      );
+    });
+  }
+
+  function renderCheckboxes(
+    daysInCurMonth,
+    habitTitle,
+    checkboxesChecked,
+    getHabits
+  ) {
+    const numbersArray = createNumArray(daysInCurMonth);
+
+    return numbersArray.map((_, i) => {
+      return (
+        <TableData key={i}>
+          <CheckboxInput
+            value={i}
+            habitTitle={habitTitle}
+            checkboxesChecked={checkboxesChecked}
+            // boxChecked={boxChecked}
+            // setBoxChecked={setBoxChecked}
+            getHabits={getHabits}
+          />
+        </TableData>
+      );
+    });
+  }
+
+  return <>{renderHabit()}</>;
 }
-
-export default HabitsListItem;
+export default HabitListItem;

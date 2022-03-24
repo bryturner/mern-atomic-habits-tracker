@@ -32,7 +32,7 @@ function NewHabitForm({ getHabits }) {
         checkboxColor: checkboxColor,
       };
 
-      await axios.put('http://localhost:5015/user/newHabit', habitData);
+      await axios.put('http://localhost:5020/habit/newHabit', habitData);
 
       getHabits();
       toggleHabitForm();
@@ -40,7 +40,7 @@ function NewHabitForm({ getHabits }) {
       setHabitDescription('');
       setHabitFrequency('');
       setHabitDuration('');
-      setCheckboxColor('');
+      setCheckboxColor('#ff0000');
     } catch (err) {
       console.error(err);
     }

@@ -1,13 +1,13 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-import AuthContext from "../context/AuthContext";
-import { LoginFormStyled } from "../styles/Form.styled";
+import AuthContext from '../context/AuthContext';
+import { LoginFormStyled } from '../styles/Form.styled';
 
 function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const { getLoggedIn } = useContext(AuthContext);
 
@@ -21,9 +21,9 @@ function LoginPage() {
         username,
         password,
       };
-      await axios.post("http://localhost:5015/user/login", loginData);
+      await axios.post('http://localhost:5020/user/login', loginData);
       await getLoggedIn();
-      navigate("/home");
+      navigate('/home');
     } catch (err) {
       console.error(err);
     }
@@ -36,13 +36,13 @@ function LoginPage() {
           type="text"
           placeholder="Username"
           autoFocus
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           value={username}
         />
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           value={password}
         />
         <button type="submit">Log In</button>

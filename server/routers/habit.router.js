@@ -2,8 +2,19 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const Habit = require("../models/habit.model");
 
+// get all ids and habits
+// ******for dev
+router.get("/", auth, async (req, res) => {
+  try {
+    const userIdHabits = await Habit.find();
+    res.send(userIdHabits);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 // get user habits list
-router.get("/habitList", auth, async (req, res) => {
+router.get("/habitsList", auth, async (req, res) => {
   try {
     const { id } = req.cookies.userData;
 
@@ -12,17 +23,6 @@ router.get("/habitList", auth, async (req, res) => {
     const { habits } = matchingUser;
 
     res.json(habits);
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-// get all ids and habits
-// ******for dev
-router.get("/", auth, async (req, res) => {
-  try {
-    const userIdHabits = await Habit.find();
-    res.send(userIdHabits);
   } catch (err) {
     console.error(err);
   }
@@ -90,6 +90,57 @@ router.put("/newHabit", auth, async (req, res) => {
     console.error(err);
   }
 });
+
+// update checkboxes checked
+router.put("/checkboxes", auth, async (req, res) => {
+  try {
+    const { habitTitle, checkboxesChecked } = req.body;
+    const { id } = req.cookies.userData;
+
+    const matchingUser = await Habit.findOne({ userId: id });
+
+    const { habits } = matchingUser;
+
+    for (let i = 0; i < habits.length; i++) {
+      if (habits[i].habitTitle === habitTitle) {
+        await Habit.updateOne(
+          { userId: matchingUser.userId, "habits.habitTitle": habitTitle },
+          { $set: { "habits.$.checkboxesChecked": checkboxesChecked } }
+        );
+        return res.json(habits);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// router.put("/checkboxes", auth, async (req, res) => {
+//   try {
+//     const { habitTitle, checkboxIndexNum } = req.body;
+//     const { id } = req.cookies.userData;
+
+//     const matchingUser = await Habit.findOne({ userId: id });
+
+//     const { habits } = matchingUser;
+
+//     for (let i = 0; i < habits.length; i++) {
+//       if (habits[i].habitTitle === habitTitle) {
+//         await Habit.updateOne(
+//           {
+//             userId: matchingUser.userId,
+//             "habits.habitTitle": habitTitle,
+//             "habits.checkboxesChecked": [],
+//           },
+//           { $set: { "checkboxesChecked.$": checkboxIndexNum } }
+//         );
+//         return res.send();
+//       }
+//     }
+//   } catch (err) {
+//     console.error(err);
+//   }
+// });
 
 // delete a habit from the habits array based on the habit title
 router.delete("/deleteHabit", auth, async (req, res) => {

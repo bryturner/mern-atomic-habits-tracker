@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 // Error handling if there is already a number in the array
-function CheckboxInput({
-  value,
-  habitTitle,
-  checkboxesChecked,
-  //   boxChecked,
-  //   setBoxChecked,
-  getHabits,
-}) {
+function CheckboxInput({ value, habitTitle, checkboxesChecked, getHabits }) {
   const [boxChecked, setBoxChecked] = useState(false);
 
-  console.log(value, habitTitle, checkboxesChecked, getHabits);
+  //   console.log(value, habitTitle, checkboxesChecked, getHabits);
+
+  async function updateCheckboxesCheckedDB(checkboxData) {
+    await axios.put('http://localhost:5020/habit/checkboxes', checkboxData);
+  }
+
+  function removeCheckbox(checkboxesChecked, checkboxValueIndexNum) {
+    return checkboxesChecked.filter(checkbox => {
+      return checkbox != checkboxValueIndexNum;
+    });
+  }
+
   async function updateCheckboxesChecked(
     habitTitle,
     checkboxesChecked,
@@ -21,13 +25,17 @@ function CheckboxInput({
   ) {
     try {
       if (boxChecked === true) {
-        checkboxesChecked.pop(checkboxValueIndexNum);
-
+        const newCheckboxesCheckedArr = removeCheckbox(
+          checkboxesChecked,
+          checkboxValueIndexNum
+        );
+        //   checkboxesChecked.pop(checkboxValueIndexNum);
+        console.log(checkboxesChecked, newCheckboxesCheckedArr);
         const checkboxData = {
           habitTitle: habitTitle,
-          checkboxesChecked: checkboxesChecked,
+          checkboxesChecked: newCheckboxesCheckedArr,
         };
-
+        console.log(checkboxData);
         await axios.put('http://localhost:5020/habit/checkboxes', checkboxData);
 
         getHabits();
@@ -40,6 +48,7 @@ function CheckboxInput({
           habitTitle: habitTitle,
           checkboxesChecked: checkboxesChecked,
         };
+        //   console.log(checkboxData);
 
         await axios.put('http://localhost:5020/habit/checkboxes', checkboxData);
         getHabits();

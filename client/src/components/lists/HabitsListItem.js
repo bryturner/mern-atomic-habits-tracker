@@ -6,8 +6,6 @@ import { createNumArray } from '../../utils/helpers';
 import CheckboxInput from '../inputs/CheckboxInput';
 
 function HabitListItem({ daysInCurMonth, habits, getHabits }) {
-  const [boxChecked, setBoxChecked] = useState(false);
-
   function renderHabit() {
     return habits.map((habit, i) => {
       const { habitTitle, checkboxesChecked } = habit;
@@ -46,8 +44,6 @@ function HabitListItem({ daysInCurMonth, habits, getHabits }) {
             value={i}
             habitTitle={habitTitle}
             checkboxesChecked={checkboxesChecked}
-            // boxChecked={boxChecked}
-            // setBoxChecked={setBoxChecked}
             getHabits={getHabits}
           />
         </TableData>

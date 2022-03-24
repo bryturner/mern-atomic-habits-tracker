@@ -13,6 +13,7 @@ import {
   TableBody,
 } from '../components/table';
 import HabitListItem from '../components/lists/HabitsListItem';
+import { createNumArray } from '../utils/helpers';
 
 function HabitsChartPage() {
   const [firstName, setFirstName] = useState('');

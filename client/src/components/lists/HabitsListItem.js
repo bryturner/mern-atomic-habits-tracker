@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import DeleteHabitButton from '../buttons/DeleteHabitButton';
 import { TableData, TableRow } from '../table';
-import { createNumArray } from '../../utils/helpers';
-import CheckboxInput from '../inputs/CheckboxInput';
+
+import TableDataCheckboxArray from '../table/TableDataCheckboxArray';
 
 function HabitListItem({ daysInCurMonth, habits, getHabits }) {
   function renderHabit() {
@@ -18,35 +18,13 @@ function HabitListItem({ daysInCurMonth, habits, getHabits }) {
           <TableData>
             <h2>{habitTitle}</h2>
           </TableData>
-          {renderCheckboxes(
-            daysInCurMonth,
-            habitTitle,
-            checkboxesChecked,
-            getHabits
-          )}
-        </TableRow>
-      );
-    });
-  }
-
-  function renderCheckboxes(
-    daysInCurMonth,
-    habitTitle,
-    checkboxesChecked,
-    getHabits
-  ) {
-    const numbersArray = createNumArray(daysInCurMonth);
-
-    return numbersArray.map((_, i) => {
-      return (
-        <TableData key={i}>
-          <CheckboxInput
-            value={i}
+          <TableDataCheckboxArray
+            daysInCurMonth={daysInCurMonth}
             habitTitle={habitTitle}
             checkboxesChecked={checkboxesChecked}
             getHabits={getHabits}
           />
-        </TableData>
+        </TableRow>
       );
     });
   }

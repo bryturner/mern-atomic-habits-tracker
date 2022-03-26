@@ -105,9 +105,33 @@ router.put("/checkboxes", auth, async (req, res) => {
       if (habits[i].habitTitle === habitTitle) {
         await Habit.updateOne(
           { userId: matchingUser.userId, "habits.habitTitle": habitTitle },
-          { $set: { "habits.$.checkboxesChecked": checkboxesChecked } }
+          { $addToSet: { "habits.$.checkboxesChecked": checkboxesChecked } }
         );
-        return res.json(habits);
+        res.json(habits);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// remove checkbox index number from array
+router.put("/removeCheckbox", auth, async (req, res) => {
+  try {
+    const { habitTitle, checkboxesChecked } = req.body;
+    const { id } = req.cookies.userData;
+
+    const matchingUser = await Habit.findOne({ userId: id });
+
+    const { habits } = matchingUser;
+
+    for (let i = 0; i < habits.length; i++) {
+      if (habits[i].habitTitle === habitTitle) {
+        await Habit.updateOne(
+          { userId: matchingUser.userId, "habits.habitTitle": habitTitle },
+          { $addToSet: { "habits.$.checkboxesChecked": checkboxesChecked } }
+        );
+        res.json(habits);
       }
     }
   } catch (err) {

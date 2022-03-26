@@ -18,9 +18,9 @@ function TableDataCheckboxArray({
   }
 
   function renderCheckboxes() {
-    const checkboxLength = createNumArray(daysInCurMonth);
+    const days = createNumArray(daysInCurMonth);
 
-    return checkboxLength.map((_, i) => {
+    return days.map((_, i) => {
       return (
         <>
           {checkboxInArray(i) === false && (

@@ -118,7 +118,7 @@ router.put("/checkboxes", auth, async (req, res) => {
 // remove checkbox index number from array
 router.put("/removeCheckbox", auth, async (req, res) => {
   try {
-    const { habitTitle, checkboxesChecked } = req.body;
+    const { habitTitle, checkboxValue } = req.body;
     const { id } = req.cookies.userData;
 
     const matchingUser = await Habit.findOne({ userId: id });
@@ -128,8 +128,8 @@ router.put("/removeCheckbox", auth, async (req, res) => {
     for (let i = 0; i < habits.length; i++) {
       if (habits[i].habitTitle === habitTitle) {
         await Habit.updateOne(
-          { userId: matchingUser.userId, "habits.habitTitle": habitTitle },
-          { $addToSet: { "habits.$.checkboxesChecked": checkboxesChecked } }
+          { userId: matchingUser.userId },
+          { $pull: { habitTitle: { checkboxesChecked: checkboxValue } } }
         );
         res.json(habits);
       }

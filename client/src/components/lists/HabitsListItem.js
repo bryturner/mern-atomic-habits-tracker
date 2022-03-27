@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import DeleteHabitButton from '../buttons/DeleteHabitButton';
-import { TableData, TableRow } from '../table';
+import React from 'react';
 
-import TableDataCheckboxArray from '../table/TableDataCheckboxArray';
+import DeleteHabitButton from '../buttons/DeleteHabitButton';
+import { TableData, TableRow, TableDataCheckboxes } from '../table';
 
 function HabitListItem({ daysInCurMonth, habits, getHabits }) {
   function renderHabit() {
@@ -18,7 +16,7 @@ function HabitListItem({ daysInCurMonth, habits, getHabits }) {
           <TableData>
             <h2>{habitTitle}</h2>
           </TableData>
-          <TableDataCheckboxArray
+          <TableDataCheckboxes
             daysInCurMonth={daysInCurMonth}
             habitTitle={habitTitle}
             checkboxColor={checkboxColor}

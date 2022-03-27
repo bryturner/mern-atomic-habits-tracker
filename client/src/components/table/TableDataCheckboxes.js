@@ -3,10 +3,12 @@ import { createNumArray } from '../../utils/helpers';
 import { UncheckedCheckbox, CheckedCheckbox } from '../inputs';
 
 import TableData from './TableData';
+import CheckboxLabel from '../labels/CheckboxLabel';
 
-function TableDataCheckboxArray({
+function TableDataCheckboxes({
   daysInCurMonth,
   habitTitle,
+  checkboxColor,
   checkboxesChecked,
 }) {
   function checkboxInArray(index) {
@@ -24,10 +26,22 @@ function TableDataCheckboxArray({
       return (
         <TableData key={i}>
           {checkboxInArray(i) === false && (
-            <UncheckedCheckbox value={i} habitTitle={habitTitle} />
+            <CheckboxLabel>
+              <UncheckedCheckbox
+                value={i}
+                habitTitle={habitTitle}
+                checkboxColor={checkboxColor}
+              />
+            </CheckboxLabel>
           )}
           {checkboxInArray(i) === true && (
-            <CheckedCheckbox value={i} habitTitle={habitTitle} />
+            <CheckboxLabel>
+              <CheckedCheckbox
+                value={i}
+                habitTitle={habitTitle}
+                checkboxColor={checkboxColor}
+              />
+            </CheckboxLabel>
           )}
         </TableData>
       );
@@ -36,4 +50,4 @@ function TableDataCheckboxArray({
   return <>{renderCheckboxes()}</>;
 }
 
-export default TableDataCheckboxArray;
+export default TableDataCheckboxes;

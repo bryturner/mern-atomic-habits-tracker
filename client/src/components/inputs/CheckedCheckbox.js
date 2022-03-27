@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { CheckboxStyled } from '../../styles/Inputs.style';
 
-function CheckedCheckbox({ value, habitTitle }) {
+function CheckedCheckbox({ value, habitTitle, checkboxColor }) {
   async function removeFromCheckboxesChecked(checkboxValue) {
     const checkboxData = {
       habitTitle: habitTitle,
@@ -11,7 +12,8 @@ function CheckedCheckbox({ value, habitTitle }) {
   }
 
   return (
-    <input
+    <CheckboxStyled
+      checkboxColor={checkboxColor}
       type="checkbox"
       value={value}
       defaultChecked

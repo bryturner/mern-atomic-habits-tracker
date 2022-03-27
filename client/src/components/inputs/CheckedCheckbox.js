@@ -1,16 +1,23 @@
 import React from 'react';
 import axios from 'axios';
 
-function CheckedCheckbox({ value, habitTitle, getHabits }) {
-  async function updateCheckboxesChecked(habitTitle, checkboxIndexNumber) {
+function CheckedCheckbox({ value, habitTitle }) {
+  async function removeFromCheckboxesChecked(checkboxValue) {
     const checkboxData = {
       habitTitle: habitTitle,
-      checkboxesChecked: checkboxIndexNumber,
+      checkboxValue: checkboxValue,
     };
-    await axios.put('http://localhost:5020/habit/checkboxes', checkboxData);
+    await axios.put('http://localhost:5020/habit/removeCheckbox', checkboxData);
   }
 
-  return <input type="checkbox" value={value} defaultChecked />;
+  return (
+    <input
+      type="checkbox"
+      value={value}
+      defaultChecked
+      onChange={e => removeFromCheckboxesChecked(+e.target.value)}
+    />
+  );
 }
 
 export default CheckedCheckbox;

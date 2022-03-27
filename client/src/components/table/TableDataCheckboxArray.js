@@ -8,7 +8,6 @@ function TableDataCheckboxArray({
   daysInCurMonth,
   habitTitle,
   checkboxesChecked,
-  getHabits,
 }) {
   function checkboxInArray(index) {
     for (let i = 0; i < checkboxesChecked.length; i++) {
@@ -19,30 +18,18 @@ function TableDataCheckboxArray({
 
   function renderCheckboxes() {
     const days = createNumArray(daysInCurMonth);
-
+    // Uses days num array to map each checkbox with index
+    // index is used as key and value of each checkbox
     return days.map((_, i) => {
       return (
-        <>
+        <TableData key={i}>
           {checkboxInArray(i) === false && (
-            <TableData key={i}>
-              <UncheckedCheckbox
-                value={i}
-                habitTitle={habitTitle}
-                getHabits={getHabits}
-              />
-            </TableData>
+            <UncheckedCheckbox value={i} habitTitle={habitTitle} />
           )}
-
           {checkboxInArray(i) === true && (
-            <TableData key={i}>
-              <CheckedCheckbox
-                value={i}
-                habitTitle={habitTitle}
-                getHabits={getHabits}
-              />
-            </TableData>
+            <CheckedCheckbox value={i} habitTitle={habitTitle} />
           )}
-        </>
+        </TableData>
       );
     });
   }

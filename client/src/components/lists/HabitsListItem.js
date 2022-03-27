@@ -8,7 +8,7 @@ import TableDataCheckboxArray from '../table/TableDataCheckboxArray';
 function HabitListItem({ daysInCurMonth, habits, getHabits }) {
   function renderHabit() {
     return habits.map((habit, i) => {
-      const { habitTitle, checkboxesChecked } = habit;
+      const { habitTitle, checkboxColor, checkboxesChecked } = habit;
 
       return (
         <TableRow key={i}>
@@ -21,8 +21,8 @@ function HabitListItem({ daysInCurMonth, habits, getHabits }) {
           <TableDataCheckboxArray
             daysInCurMonth={daysInCurMonth}
             habitTitle={habitTitle}
+            checkboxColor={checkboxColor}
             checkboxesChecked={checkboxesChecked}
-            getHabits={getHabits}
           />
         </TableRow>
       );

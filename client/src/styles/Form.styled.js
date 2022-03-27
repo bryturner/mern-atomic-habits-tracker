@@ -5,30 +5,20 @@ export const FormStyled = styled.div`
   flex-direction: column;
   gap: 1.2rem;
   align-items: flex-start;
-
-  label {
-    display: block;
-  }
 `;
 
 export const RegisterFormStyled = styled(FormStyled)``;
 export const LoginFormStyled = styled(FormStyled)``;
 
 export const NewHabitFormStyled = styled(FormStyled)`
-  display: ${props => (props.toggle ? 'block' : 'none')};
-  /* max-width: 60rem; */
+  /* display: ${props => (props.toggle ? 'block' : 'none')}; */
   padding: 2.4rem 6.4rem 3.6rem 6.4rem;
   border: 3px solid black;
   border-radius: 11px;
   background-color: paleturquoise;
   position: relative;
 
-  h2 {
-    text-align: center;
-    margin-bottom: 1.4rem;
-  }
-
-  input,
+  /* input,
   textarea,
   select {
     font-family: inherit;
@@ -47,7 +37,7 @@ export const NewHabitFormStyled = styled(FormStyled)`
   textarea {
     width: 100% !important;
     resize: none;
-  }
+  } */
 `;
 
 export const EditHabitFormStyled = styled(FormStyled)`

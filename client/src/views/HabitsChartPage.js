@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 import NewHabitForm from '../components/forms/NewHabitForm';
-import AddHabitButton from '../components/buttons/AddHabitButton';
+import { AddHabitButton } from '../components/buttons';
 import {
   TableHead,
-  TableRow,
-  TableHeader,
   Table,
   TableBody,
+  TableHeaderRow,
 } from '../components/table';
 import HabitListItem from '../components/lists/HabitsListItem';
-import { createNumArray } from '../utils/helpers';
+import { NewHabitFormContainer } from '../styles/Containers.styled';
 
 function HabitsChartPage() {
   const [firstName, setFirstName] = useState('');
@@ -40,16 +39,6 @@ function HabitsChartPage() {
     }
   }
 
-  function renderHeaderNumbers(daysInCurMonth) {
-    let tableHeaderNumbers = [];
-    for (let i = 1; i <= daysInCurMonth; i++) {
-      tableHeaderNumbers.push(i);
-    }
-    return tableHeaderNumbers.map((tableHeaderNumber, i) => {
-      return <TableHeader key={i}>{tableHeaderNumber}</TableHeader>;
-    });
-  }
-
   useEffect(() => {
     getFirstName();
   }, []);
@@ -64,11 +53,7 @@ function HabitsChartPage() {
 
       <Table>
         <TableHead>
-          <TableRow>
-            <TableHeader>Buttons</TableHeader>
-            <TableHeader>Habit Title</TableHeader>
-            {renderHeaderNumbers(daysInCurMonth)}
-          </TableRow>
+          <TableHeaderRow daysInCurMonth={daysInCurMonth} />
         </TableHead>
         <TableBody>
           <HabitListItem
@@ -79,7 +64,10 @@ function HabitsChartPage() {
         </TableBody>
       </Table>
       <AddHabitButton />
-      <NewHabitForm getHabits={getHabits} />
+
+      <NewHabitFormContainer>
+        <NewHabitForm getHabits={getHabits} />
+      </NewHabitFormContainer>
     </>
   );
 }

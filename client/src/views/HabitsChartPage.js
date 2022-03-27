@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import NewHabitForm from '../components/forms/NewHabitForm';
-import HabitsList from '../components/lists/HabitsList';
-
 import AddHabitButton from '../components/buttons/AddHabitButton';
 import {
   TableHead,

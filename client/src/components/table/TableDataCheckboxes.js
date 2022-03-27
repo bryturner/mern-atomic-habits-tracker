@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createNumArray } from '../../utils/helpers';
 import { UncheckedCheckbox, CheckedCheckbox } from '../inputs';
 

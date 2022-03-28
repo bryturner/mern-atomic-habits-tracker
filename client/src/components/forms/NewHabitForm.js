@@ -9,6 +9,7 @@ import { TextInput, TextAreaInput } from '../inputs';
 import { CloseHabitFormButton } from '../buttons';
 import AddNewHabitForm from './AddNewHabitForm';
 import HabitFormLabel from '../labels/HabitFormLabel';
+import SelectOptionInput from '../inputs/SelectFrequencyInput';
 
 function NewHabitForm({ getHabits }) {
   const { toggleHabitForm, showHabitForm } = useContext(HabitFormContext);
@@ -77,7 +78,13 @@ function NewHabitForm({ getHabits }) {
         <HabitFormLabel>
           How often will you complete your new habit?
         </HabitFormLabel>
-        <select
+        <SelectOptionInput
+          onChange={e => {
+            setHabitFrequency(e.target.value);
+          }}
+          value={habitFrequency}
+        />
+        {/* <select
           onChange={e => {
             setHabitFrequency(e.target.value);
           }}
@@ -89,7 +96,7 @@ function NewHabitForm({ getHabits }) {
           <option value="Every other day">Every other day</option>
           <option value="2 or 3 per week">2 to 3 per week</option>
           <option value="Once per week">Once per week</option>
-        </select>
+        </select> */}
       </LabelInputWrapper>
       <LabelInputWrapper>
         <HabitFormLabel>How many minutes does your habit take?</HabitFormLabel>

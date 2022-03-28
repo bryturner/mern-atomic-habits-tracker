@@ -1,8 +1,8 @@
 import React from 'react';
 
-function SelectOptionInput() {
+function SelectOptionInput({ value }) {
   return (
-    <select required>
+    <select defaultValue={value} required>
       <option value="">Select one</option>
       <option value="Once per day">Once per day</option>
       <option value="Every other day">Every other day</option>

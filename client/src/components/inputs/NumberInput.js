@@ -1,7 +1,7 @@
 import React from 'react';
 
-function NumberInput() {
-  return <input type="number" required />;
+function NumberInput({ value }) {
+  return <input type="number" defaultValue={value} required />;
 }
 
 export default NumberInput;

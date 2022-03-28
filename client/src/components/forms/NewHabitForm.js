@@ -10,6 +10,7 @@ import {
   TextAreaInput,
   SelectOptionInput,
   NumberInput,
+  ColorInput,
 } from '../inputs';
 import { CloseHabitFormButton } from '../buttons';
 import AddNewHabitForm from './AddNewHabitForm';
@@ -53,6 +54,7 @@ function NewHabitForm({ getHabits }) {
     <AddNewHabitForm toggle={showHabitForm} onSubmit={saveNewHabit}>
       <CloseHabitFormButton toggleHabitForm={toggleHabitForm} />
       <h2>New Habit</h2>
+
       <LabelInputWrapper>
         <HabitFormLabel>New Habit Title:</HabitFormLabel>
         <TextInput
@@ -78,6 +80,7 @@ function NewHabitForm({ getHabits }) {
           value={habitDescription}
         />
       </LabelInputWrapper>
+
       <LabelInputWrapper>
         <HabitFormLabel>
           How often will you complete your new habit?
@@ -88,23 +91,10 @@ function NewHabitForm({ getHabits }) {
           }}
           value={habitFrequency}
         />
-        {/* <select
-          onChange={e => {
-            setHabitFrequency(e.target.value);
-          }}
-          value={habitFrequency}
-          required
-        >
-          <option value="">Select one</option>
-          <option value="Once per day">Once per day</option>
-          <option value="Every other day">Every other day</option>
-          <option value="2 or 3 per week">2 to 3 per week</option>
-          <option value="Once per week">Once per week</option>
-        </select> */}
       </LabelInputWrapper>
+
       <LabelInputWrapper>
         <HabitFormLabel>How many minutes does your habit take?</HabitFormLabel>
-
         <NumberInput
           min="1"
           max="180"
@@ -113,28 +103,15 @@ function NewHabitForm({ getHabits }) {
           }}
           value={habitDuration}
         />
-        {/* <input
-            type="number"
-            min="1"
-            max="180"
-            onChange={e => {
-              setHabitDuration(e.target.value);
-            }}
-            value={habitDuration}
-            required
-          /> */}
       </LabelInputWrapper>
 
       <HabitFormLabel>
         Choose a color for your checkboxes:{' '}
-        <input
-          className="colorPicker"
-          type="color"
+        <ColorInput
           onChange={e => {
             setCheckboxColor(e.target.value);
           }}
           value={checkboxColor}
-          required
         />
       </HabitFormLabel>
 

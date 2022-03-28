@@ -5,11 +5,15 @@ import { SaveHabitButton } from '../../styles/Button.styled';
 
 import { LabelInputWrapper } from '../../styles/Wrappers.styled';
 import HabitFormContext from '../../context/HabitFormContext';
-import { TextInput, TextAreaInput } from '../inputs';
+import {
+  TextInput,
+  TextAreaInput,
+  SelectOptionInput,
+  NumberInput,
+} from '../inputs';
 import { CloseHabitFormButton } from '../buttons';
 import AddNewHabitForm from './AddNewHabitForm';
 import HabitFormLabel from '../labels/HabitFormLabel';
-import SelectOptionInput from '../inputs/SelectFrequencyInput';
 
 function NewHabitForm({ getHabits }) {
   const { toggleHabitForm, showHabitForm } = useContext(HabitFormContext);
@@ -100,8 +104,16 @@ function NewHabitForm({ getHabits }) {
       </LabelInputWrapper>
       <LabelInputWrapper>
         <HabitFormLabel>How many minutes does your habit take?</HabitFormLabel>
-        <div>
-          <input
+
+        <NumberInput
+          min="1"
+          max="180"
+          onChange={e => {
+            setHabitDuration(e.target.value);
+          }}
+          value={habitDuration}
+        />
+        {/* <input
             type="number"
             min="1"
             max="180"
@@ -110,9 +122,7 @@ function NewHabitForm({ getHabits }) {
             }}
             value={habitDuration}
             required
-          />
-          <span>minutes</span>
-        </div>
+          /> */}
       </LabelInputWrapper>
 
       <HabitFormLabel>

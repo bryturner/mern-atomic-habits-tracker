@@ -11,7 +11,7 @@ export const RegisterFormStyled = styled(FormStyled)``;
 export const LoginFormStyled = styled(FormStyled)``;
 
 export const NewHabitFormStyled = styled(FormStyled)`
-  /* display: ${props => (props.toggle ? 'block' : 'none')}; */
+  display: ${props => (props.toggle ? 'block' : 'none')};
   padding: 2.4rem 6.4rem 3.6rem 6.4rem;
   border: 3px solid black;
   border-radius: 11px;

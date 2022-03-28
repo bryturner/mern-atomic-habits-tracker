@@ -51,7 +51,7 @@ function NewHabitForm({ getHabits }) {
   }
 
   return (
-    <AddNewHabitForm toggle={showHabitForm} onSubmit={saveNewHabit}>
+    <AddNewHabitForm onSubmit={saveNewHabit}>
       <CloseHabitFormButton toggleHabitForm={toggleHabitForm} />
       <h2>New Habit</h2>
 

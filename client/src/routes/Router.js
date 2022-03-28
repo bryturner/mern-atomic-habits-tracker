@@ -10,7 +10,7 @@ import LogoutPage from '../views/LogoutPage';
 import HabitsChartPage from '../views/HabitsChartPage';
 
 import { BodyContainer } from '../styles/Containers.styled';
-import Overlay from '../components/Overlay';
+import Overlay from '../components/overlays/Overlay';
 
 function Router() {
   const { loggedIn } = useContext(AuthContext);

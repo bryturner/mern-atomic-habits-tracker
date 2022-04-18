@@ -1,4 +1,4 @@
-# Atomic Habit Tracker
+# Atomic Habit Tracker - MERN Stack
 
 *Project still in development
 

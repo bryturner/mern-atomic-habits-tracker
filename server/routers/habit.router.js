@@ -56,7 +56,6 @@ router.put("/newHabit", auth, async (req, res) => {
       habitFrequency,
       habitDuration,
       checkboxColor,
-      checkboxesChecked,
     } = req.body;
 
     const newHabit = {
@@ -65,7 +64,7 @@ router.put("/newHabit", auth, async (req, res) => {
       habitFrequency: habitFrequency,
       habitDuration: habitDuration,
       checkboxColor: checkboxColor,
-      checkboxesChecked: checkboxesChecked,
+      checkboxesChecked: [],
     };
 
     const { id } = req.cookies.userData;
@@ -194,5 +193,7 @@ router.delete("/deleteHabit", auth, async (req, res) => {
     console.error(err);
   }
 });
+
+
 
 module.exports = router;
